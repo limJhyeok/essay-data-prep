@@ -1,0 +1,17 @@
+# python
+*.pyc
+__pycache__/
+*.ipynb
+venv
+.ruff_cache
+# test
+.coverage
+
+# hugginface cache
+*.cache
+
+# env, config
+.env
+
+# IDE
+.vscode/
