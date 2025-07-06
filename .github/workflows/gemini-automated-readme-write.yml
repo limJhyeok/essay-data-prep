@@ -88,6 +88,13 @@ jobs:
             - Technologies used (inferred from code)
             - Optional: Example usage or CLI/API description
 
+            For additional information about the project
+            
+            Use the command:
+            cat prompt.txt
+            
+            this will give you the information about the project structure, some example source codes, dependencies, etc.
+
             Once the README is drafted, create a new issue with:
             Title: "📄 README Draft Proposal"
             Body: Include the full markdown draft of the README
@@ -95,9 +102,9 @@ jobs:
             Use the command:
             gh issue create --title "📄 README Draft Proposal" --body "README markdown content here"
 
-            For additional information about the project
             
-            Use the command:
-            cat prompt.txt
-            
-            this will give you the information about the project structure, some example source codes, dependencies, etc.
+      - name: Create GitHub Issue
+        run: |
+          gh issue create --title "[Bot generated] README Draft" --body "$(cat README.md)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
