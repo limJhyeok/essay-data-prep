@@ -1,0 +1,57 @@
+name: Gemini README Draft Creator
+
+on:
+  workflow_dispatch:  # Trigger manually from GitHub UI
+
+jobs:
+  create-readme-issue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+
+      - name: Run Gemini to generate README draft
+        uses: google-gemini/gemini-cli-action@41c0f1b3cbd1a0b284251bd1aac034edd07a3a2f
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        with:
+          version: 0.1.8-rc.0
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          settings_json: |
+            {
+              "coreTools": [
+                "run_shell_command(gh issue create)"
+              ]
+            }
+          prompt: |
+            You are a documentation assistant. Analyse this GitHub repository and generate a draft README.md.
+
+            The README should include:
+            - Project title
+            - Description and purpose
+            - Installation steps
+            - Usage instructions
+            - Technologies used (inferred from code)
+            - Optional: Example usage or CLI/API description
+
+            Once the README is drafted, create a new issue with:
+            Title: "📄 README Draft Proposal"
+            Body: Include the full markdown draft of the README
+
+            Use the command:
+            `gh issue create --title "📄 README Draft Proposal" --body "README markdown content here"`
