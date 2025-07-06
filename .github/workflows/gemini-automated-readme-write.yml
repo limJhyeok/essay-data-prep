@@ -71,7 +71,6 @@ jobs:
           settings_json: |
             {
               "coreTools": [
-                "run_shell_command(gh issue create)",
                 "ReadFileTool",
                 "WriteFileTool",
                 "ShellTool(cat prompt.txt)"
@@ -95,13 +94,7 @@ jobs:
             
             this will give you the information about the project structure, some example source codes, dependencies, etc.
 
-            Once the README is drafted, create a new issue with:
-            Title: "📄 README Draft Proposal"
-            Body: Include the full markdown draft of the README
-
-            Use the command:
-            gh issue create --title "📄 README Draft Proposal" --body "README markdown content here"
-
+            Once the README is drafted, create the README.md file:
             
       - name: Create GitHub Issue
         run: |
