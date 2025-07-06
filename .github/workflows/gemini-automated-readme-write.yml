@@ -73,6 +73,7 @@ jobs:
               "coreTools": [
                 "run_shell_command(gh issue create)",
                 "ReadFileTool",
+                "WriteFileTool",
                 "ShellTool(cat prompt.txt)"
               ]
             }
