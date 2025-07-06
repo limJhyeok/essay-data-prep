@@ -44,7 +44,7 @@ jobs:
               "coreTools": [
                 "run_shell_command(gh label list)",
                 "run_shell_command(gh issue edit)",
-              ],
+              ]
             }
           prompt: |
             You are an issue triage assistant for GitHub issues.
