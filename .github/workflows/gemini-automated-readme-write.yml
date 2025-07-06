@@ -72,7 +72,7 @@ jobs:
             {
               "coreTools": [
                 "run_shell_command(gh issue create)",
-                "ReadFileTool"
+                "ReadFileTool",
                 "ShellTool(cat prompt.txt)"
               ]
             }
