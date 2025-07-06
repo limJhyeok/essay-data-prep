@@ -24,6 +24,42 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ steps.generate_token.outputs.token }}
+      - name: Install tools
+        run: |
+          sudo apt update
+          sudo apt install tree jq
+
+      - name: Extract project info
+        run: |
+          echo "📁 Project Tree:"
+          tree -L 2 > structure.txt
+
+          echo "📦 Dependencies:"
+          cat pyproject.toml >> deps.txt; fi
+
+          echo "🔍 Sample Code:"
+          find . -name "*.py" | head -n 5 | xargs cat > code_snippets.txt
+
+      - name: Compose AI prompt
+        run: |
+          echo "You are a documentation assistant. Analyse this GitHub repository and generate a draft README.md." > prompt.txt
+          echo "" >> prompt.txt
+          echo "The README should include:" >> prompt.txt
+          echo "- Project title" >> prompt.txt
+          echo "- Description and purpose" >> prompt.txt
+          echo "- Installation steps" >> prompt.txt
+          echo "- Usage instructions" >> prompt.txt
+          echo "- Technologies used (inferred from code)" >> prompt.txt
+          echo "- Optional: Example usage or CLI/API description" >> prompt.txt
+          echo "" >> prompt.txt
+          echo "## Project Structure" >> prompt.txt
+          cat structure.txt >> prompt.txt
+          echo "" >> prompt.txt
+          echo "## Dependencies" >> prompt.txt
+          cat deps.txt >> prompt.txt
+          echo "" >> prompt.txt
+          echo "## Code Snippets" >> prompt.txt
+          cat code_snippets.txt >> prompt.txt
 
       - name: Run Gemini to generate README draft
         uses: google-gemini/gemini-cli-action@41c0f1b3cbd1a0b284251bd1aac034edd07a3a2f
@@ -39,19 +75,4 @@ jobs:
               ]
             }
           prompt: |
-            You are a documentation assistant. Analyse this GitHub repository and generate a draft README.md.
-
-            The README should include:
-            - Project title
-            - Description and purpose
-            - Installation steps
-            - Usage instructions
-            - Technologies used (inferred from code)
-            - Optional: Example usage or CLI/API description
-
-            Once the README is drafted, create a new issue with:
-            Title: "📄 README Draft Proposal"
-            Body: Include the full markdown draft of the README
-
-            Use the command:
-            `gh issue create --title "📄 README Draft Proposal" --body "README markdown content here"`
+            "$(cat prompt.txt)"
