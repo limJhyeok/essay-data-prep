@@ -35,7 +35,7 @@ jobs:
           tree -L 2 > structure.txt
 
           echo "📦 Dependencies:"
-          cat pyproject.toml >> deps.txt; fi
+          cat pyproject.toml >> deps.txt
 
           echo "🔍 Sample Code:"
           find . -name "*.py" | head -n 5 | xargs cat > code_snippets.txt
