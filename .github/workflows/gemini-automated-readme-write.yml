@@ -71,8 +71,32 @@ jobs:
           settings_json: |
             {
               "coreTools": [
-                "run_shell_command(gh issue create)"
+                "run_shell_command(gh issue create)",
+                "ReadFileTool"
+                "ShellTool(cat prompt.txt)"
               ]
             }
           prompt: |
-            "$(cat prompt.txt)"
+            You are a documentation assistant. Analyse this GitHub repository and generate a draft README.md.
+
+            The README should include:
+            - Project title
+            - Description and purpose
+            - Installation steps
+            - Usage instructions
+            - Technologies used (inferred from code)
+            - Optional: Example usage or CLI/API description
+
+            Once the README is drafted, create a new issue with:
+            Title: "📄 README Draft Proposal"
+            Body: Include the full markdown draft of the README
+
+            Use the command:
+            gh issue create --title "📄 README Draft Proposal" --body "README markdown content here"
+
+            For additional information about the project
+            
+            Use the command:
+            cat prompt.txt
+            
+            this will give you the information about the project structure, some example source codes, dependencies, etc.
